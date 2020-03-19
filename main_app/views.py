@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from .models import Shoe
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView
+from .models import Shoe, Store
 from .forms import LastWornForm
 
 #CBV
@@ -35,10 +36,12 @@ def shoes_index(request):
 
 def shoes_detail(request, shoe_id):
     shoe = Shoe.objects.get(id=shoe_id)
+    stores_shoe_isnt_sold_in = Store.objects.exclude(id__in = shoe.stores.all().values_list('id'))
     lastworn_form = LastWornForm()
     return render(request, 'shoes/detail.html', {
          'shoe': shoe,
-         'lastworn_form': lastworn_form
+         'lastworn_form': lastworn_form,
+         'stores': stores_shoe_isnt_sold_in,
         })
 
 def add_lastworn(request, shoe_id):
@@ -48,3 +51,30 @@ def add_lastworn(request, shoe_id):
         new_lastworn.shoe_id = shoe_id
         new_lastworn.save()
     return redirect('detail', shoe_id=shoe_id)
+
+def assoc_store(request, shoe_id, store_id):
+  Shoe.objects.get(id=shoe_id).stores.add(store_id)
+  return redirect('detail', shoe_id=shoe_id)
+
+def unassoc_store(request, shoe_id, store_id):
+  Shoe.objects.get(id=shoe_id).store.remove(store_id)
+  return redirect('detail', shoe_id=shoe_id)
+
+
+class StoreList(ListView):
+  model = Store
+
+class StoreDetail(DetailView):
+  model = Store
+
+class StoreCreate(CreateView):
+  model = Store
+  fields = '__all__'
+
+class StoreUpdate(UpdateView):
+  model = Store
+  fields = ['name', 'address']
+
+class StoreDelete(DeleteView):
+  model = Store
+  success_url = '/stores/'

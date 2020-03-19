@@ -12,4 +12,9 @@ urlpatterns = [
     path('shoes/<int:pk>/update/', views.ShoeUpdate.as_view(), name='shoes_update'),
     path('shoes/<int:pk>/delete/', views.ShoeDelete.as_view(), name='shoes_delete'),
     path('shoes/<int:shoe_id>/add_lastworn/', views.add_lastworn, name='add_lastworn'),
+    # path('toys/', views.ToyList.as_view(), name='toys_index'),
+    path('stores/<int:pk>/', views.StoreDetail.as_view(), name='stores_detail'),
+    # path('toys/create/', views.ToyCreate.as_view(), name='toys_create'),
+    # path('toys/<int:pk>/update/', views.ToyUpdate.as_view(), name='toys_update'),
+    # path('toys/<int:pk>/delete/', views.ToyDelete.as_view(), name='toys_delete'),
 ]

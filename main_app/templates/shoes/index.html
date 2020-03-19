@@ -10,10 +10,10 @@
       <span class="card-title">{{ shoe.model }}</span>
       <p>Brand: {{ shoe.brand }}</p>
       <p>Color: {{ shoe.color }}</p>
-      {% if shoe.price < 200.00 %}
+      {% if shoe.price < 99999.00 %}
         <p>Price: ${{ shoe.price }}</p>
       {% else %}
-        <p>Price: Way OverPriced!</p>
+        <p>Price: Way Over Priced!</p>
       {% endif %}
     </div>
     </a>

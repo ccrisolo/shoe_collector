@@ -8,11 +8,23 @@ ACTIVITIES = (
     ('S', 'Sport'),
 )
 # Create your models here.
+
+class Store(models.Model):
+  name = models.CharField(max_length=50)
+  address = models.CharField(max_length=20)
+
+  def __str__(self):
+    return self.name
+
+  def get_absolute_url(self):
+    return reverse('stores_detail', kwargs={'pk': self.id})
+
 class Shoe(models.Model):
     model = models.CharField(max_length=100)
     brand = models.CharField(max_length=100)
     color = models.CharField(max_length=50)
     price = models.IntegerField()
+    stores = models.ManyToManyField(Store)
 
     def __str__(self):
         return self.model
@@ -33,3 +45,6 @@ class LastWorn(models.Model):
 
     def __str__(self):
         return f"{self.get_activity_display()} on {self.date}"
+
+    class Meta:
+        ordering = ['-date']
