@@ -48,7 +48,7 @@
         <div class="card">
           <div class="card-content">
             <span class="card-title">
-              <span>{{ store.name }}</span> {{ store.address }}
+              <span><strong>{{ store.name }}</strong></span> {{ store.address }}
             </span>
           </div>
           <div class="card-action">
@@ -71,7 +71,7 @@
         <div class="card">
           <div class="card-content">
             <span class="card-title">
-              A <span>{{ store.name }}</span> {{ store.address}}
+              <span><strong>{{ store.name }}</strong></span> {{ store.address}}
             </span>
           </div>
           <div class="card-action">
@@ -83,7 +83,7 @@
         </div>
       {% endfor %}
     {% else %}
-      <h5>All stores that carry {{shoe.name}}'s have been added</h5>
+      <h5>All stores that carry this item have been added</h5>
     {% endif %}
   </div>
 </div>

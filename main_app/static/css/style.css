@@ -9,13 +9,14 @@ body {
   }
   
 .page-footer {
-    background-color: springgreen;
+    background-color: rgba(1,255,127 ,1 );
     padding-top: 0;
     text-align: right;
+    
   }
 
   .nav-wrapper {
-    background-color: springgreen;
+    background-color: rgba(1,255,127 ,1 );
     position: relative;
     height: 100%;
 }
