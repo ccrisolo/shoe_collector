@@ -2,8 +2,14 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
-from .models import Shoe, Store
+from .models import Shoe, Store, Photo
 from .forms import LastWornForm
+import uuid
+import boto3
+
+S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
+BUCKET = 'shoecollector'
+
 
 #CBV
 class ShoeList(ListView):
@@ -12,12 +18,12 @@ class ShoeList(ListView):
 
 class ShoeCreate(CreateView):
     model = Shoe
-    fields = '__all__'
+    fields = ['model', 'brand', 'color', 'price']
     success_url = '/shoes/'
 
 class ShoeUpdate(UpdateView):
     model = Shoe
-    fields = '__all__'
+    fields = ['model', 'brand', 'color', 'price']
 
 class ShoeDelete(DeleteView):
     model = Shoe
@@ -52,12 +58,26 @@ def add_lastworn(request, shoe_id):
         new_lastworn.save()
     return redirect('detail', shoe_id=shoe_id)
 
+def add_photo(request, shoe_id):
+  photo_file = request.FILES.get('photo-file', None)
+  if photo_file:
+    s3 = boto3.client('s3')
+    key = uuid.uuid4().hex[:6] + photo_file.name[photo_file.name.rfind('.'):]
+    try:
+      s3.upload_fileobj(photo_file, BUCKET, key)
+      url = f"{S3_BASE_URL}{BUCKET}/{key}"
+      photo = Photo(url=url, shoe_id=shoe_id)
+      photo.save()
+    except:
+      print('An error occurred uploading file to S3')
+  return redirect('detail', shoe_id=shoe_id)
+
 def assoc_store(request, shoe_id, store_id):
   Shoe.objects.get(id=shoe_id).stores.add(store_id)
   return redirect('detail', shoe_id=shoe_id)
 
 def unassoc_store(request, shoe_id, store_id):
-  Shoe.objects.get(id=shoe_id).store.remove(store_id)
+  Shoe.objects.get(id=shoe_id).stores.remove(store_id)
   return redirect('detail', shoe_id=shoe_id)
 
 
