@@ -1,4 +1,5 @@
 body {
+  background-color: silver;
     display: flex;
     min-height: 100vh;
     flex-direction: column;
@@ -8,16 +9,16 @@ body {
     flex: 1 0 auto;
   }
   
-.page-footer {
-    background-color: rgba(1,255,127 ,1 );
-    padding-top: 0;
-    text-align: right;
-    
-  }
-
-  .nav-wrapper {
+  
+  nav .nav-wrapper {
     background-color: rgba(1,255,127 ,1 );
     position: relative;
     height: 100%;
-}
+  }
   
+  .page-footer {
+      background-color: rgba(1,255,127 ,1 );
+      padding-top: 0;
+      text-align: right;
+      
+    }
